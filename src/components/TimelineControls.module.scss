@@ -1,0 +1,92 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  position: absolute;
+  bottom: -30px;
+}
+
+.counter {
+  font-size: 16px;
+  color: var(--color-black-blue);
+}
+
+.buttons {
+  width: 80px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  width: 35px;
+  height: 35px;
+  border: 1px solid var(--color-black-blue);
+  background-color: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-style: solid;
+    border-color: var(--color-black-blue);
+    border-width: 0 3px 3px 0;
+    transform: translate(-40%, -50%) rotate(135deg);
+  }
+  &:disabled {
+    opacity: 0.25;
+  }
+}
+
+.buttonNext::after {
+  transform: translate(-60%, -50%) rotate(-45deg);
+}
+
+@media (min-width: 1024px) {
+  .controls {
+    grid-column: 1 / 2;
+    justify-self: flex-start;
+    align-items: flex-start;
+    margin-top: 0;
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .counter {
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+
+  .buttons {
+    gap: 20px;
+    width: auto;
+  }
+
+  .button {
+    width: 50px;
+    height: 50px;
+
+    &:hover {
+      background-color: white;
+    }
+
+    &::after {
+      width: 8px;
+      height: 8px;
+      border-width: 0 2px 2px 0;
+      transform: translate(-30%, -50%) rotate(135deg);
+    }
+  }
+
+  .buttonNext::after {
+    transform: translate(-70%, -50%) rotate(-45deg);
+  }
+}

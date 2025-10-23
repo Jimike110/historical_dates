@@ -1,0 +1,86 @@
+.circle {
+  display: none;
+}
+
+.dotContainer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.dotContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-black-blue);
+  border-radius: 50%;
+  transition:
+    transform 0.4s ease,
+    background-color 0.4s ease,
+    border 0.4s ease;
+}
+
+.dotLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-black-blue);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dotTitle {
+  position: absolute;
+  left: 40px;
+  bottom: -10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-black-blue);
+  white-space: nowrap;
+  opacity: 0;
+  animation: fadeIn 0.5s ease 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.dotContainer.active,
+.dotContainer:hover {
+  .dot {
+    transform: scale(9);
+    background-color: #f4f5f9;
+    border: 1px solid rgba(66, 86, 122, 0.2);
+  }
+
+  .dotLabel {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 769px) {
+  .circle {
+    display: block;
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    width: 530px;
+    height: 530px;
+    border: 1px solid rgba(66, 86, 122, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+}

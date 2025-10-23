@@ -1,0 +1,81 @@
+.timelineTitle {
+  margin-bottom: 10px;
+}
+
+.eventsSliderContainer {
+  width: 100%;
+  border-top: 1px solid #c7cdd9;
+  padding-top: 20px;
+}
+
+.swiper {
+  // overflow: visible;
+  position: relative;
+}
+
+.swiperSlide {
+  width: 70%;
+  max-width: 300px;
+  height: 150px;
+}
+
+.swiperSlide {
+  width: 80% !important;
+  max-width: 220px;
+  opacity: 0.4;
+  transition-property: opacity;
+}
+
+.isFullyVisible {
+  opacity: 1;
+}
+
+.slideYear {
+  font-size: 20px;
+  font-weight: 400;
+  font-family: 'Bebas Neue', sans-serif;
+  line-height: 1.2;
+  color: var(--color-blue);
+  margin-bottom: 15px;
+}
+
+.slideDescription {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.customPagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 7rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-black-blue);
+  opacity: 0.4;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.activeDot {
+  opacity: 1;
+}
+
+@media (min-width: 1024px) {
+  .eventsSliderContainer {
+    grid-column: 2 / 3;
+  }
+
+  .swiperSlide {
+    width: 320px !important;
+  }
+
+  .customPagination {
+    display: none;
+  }
+}
