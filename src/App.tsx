@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { timelines } from './data/timelineData';
 import { gsap } from 'gsap';
 
-import EventsSlider from './components/EventSlider';
+import EventsSlider from './components/EventsSlider';
 import CircleNav from './components/CircleNav';
 import TimelineControls from './components/TimelineControls';
 import './assets/styles/main.scss';
@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const startYearRef = useRef<HTMLSpanElement>(null);
   const endYearRef = useRef<HTMLSpanElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
+  const eventsWrapperRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (prevIndex === undefined) {
@@ -34,6 +35,16 @@ const App: React.FC = () => {
 
     const prevTimeline = timelines[prevIndex];
     if (!prevTimeline) return;
+
+    if (startYearRef.current)
+      startYearRef.current.innerText = String(prevTimeline.startYear);
+    if (endYearRef.current)
+      endYearRef.current.innerText = String(prevTimeline.endYear);
+
+    const yearProxy = {
+      start: prevTimeline.startYear,
+      end: prevTimeline.endYear,
+    };
 
     const totalItems = timelines.length;
     const currentRotation = gsap.getProperty(
@@ -47,20 +58,19 @@ const App: React.FC = () => {
     if (rotationChange < -180) rotationChange += 360;
     const finalRotation = currentRotation + rotationChange;
 
-    const yearProxy = {
-      start: prevTimeline.startYear,
-      end: prevTimeline.endYear,
-    };
+    const tl = gsap.timeline();
 
-    gsap
-      .timeline()
-      // 1. Animate the main circle to its final rotation
-      .to(circleRef.current, {
-        rotation: finalRotation,
-        duration: 0.8,
-        ease: 'power2.inOut',
-      })
-      // 2. Animate ALL dot contents to the NEGATIVE of the circle's FINAL rotation
+    tl.to(eventsWrapperRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power1.inOut',
+    });
+
+    tl.to(circleRef.current, {
+      rotation: finalRotation,
+      duration: 0.8,
+      ease: 'power2.inOut',
+    })
       .to(
         gsap.utils.toArray(`.${styles.dotContent}`),
         {
@@ -70,8 +80,13 @@ const App: React.FC = () => {
         },
         '<'
       )
-      .to(
+
+      .fromTo(
         yearProxy,
+        {
+          start: prevTimeline.startYear,
+          end: prevTimeline.endYear,
+        },
         {
           start: activeTimeline.startYear,
           end: activeTimeline.endYear,
@@ -90,7 +105,13 @@ const App: React.FC = () => {
         },
         '<'
       );
-  }, [activeIndex, prevIndex, activeTimeline]);
+
+    tl.to(eventsWrapperRef.current, {
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power1.inOut',
+    });
+  }, [activeIndex, prevIndex, activeTimeline, timelines.length]);
 
   return (
     <main className="historical-timeline">
@@ -123,12 +144,6 @@ const App: React.FC = () => {
         </div>
 
         <div className="historical-timeline__bottom-section">
-          <EventsSlider
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            activeTimeline={activeTimeline}
-            timelines={timelines}
-          />
           <TimelineControls
             activeIndex={activeIndex}
             total={timelines.length}
@@ -140,6 +155,13 @@ const App: React.FC = () => {
             onNext={() =>
               setActiveIndex((prev) => (prev + 1) % timelines.length)
             }
+          />
+          <EventsSlider
+            activeTimeline={activeTimeline}
+            timelines={timelines}
+            activeIndex={activeIndex}
+            setActiveIndex={setActiveIndex}
+            eventsWrapperRef={eventsWrapperRef}
           />
         </div>
       </div>

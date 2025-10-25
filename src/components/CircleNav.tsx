@@ -33,7 +33,9 @@ const CircleNav: React.FC<CircleNavProps> = ({
             onClick={() => onSelect(index)}
           >
             <div className={styles.dotContent}>
-              <div className={styles.dot} />
+              <div className={styles.dot}>
+                <div className={styles.dotFill}></div>
+              </div>
               <span className={styles.dotLabel}>{index + 1}</span>
               {isActive && (
                 <span className={styles.dotTitle}>{timeline.title}</span>

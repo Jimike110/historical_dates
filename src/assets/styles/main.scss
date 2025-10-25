@@ -2,10 +2,10 @@
 
 :root {
   --color-blue: #3877ee;
+  --color-iris: #5D5FEF;
   --color-pink: #ef5da8;
   --color-text-primary: #42567a;
   --color-black-blue: #42567a;
-  /* Alias from your previous code */
   --background-color: #ffffff;
 }
 
@@ -19,7 +19,6 @@ body {
   font-family: 'PT Sans', sans-serif;
   background-color: var(--background-color);
   color: var(--color-black-blue);
-  min-height: 100vh;
 }
 
 .historical-timeline {
@@ -45,12 +44,12 @@ body {
 }
 
 .historical-timeline__year {
-  font-size: 4.7rem;
+  font-size: 4rem;
   font-weight: 700;
   line-height: 1;
 
   &--start {
-    color: var(--color-blue);
+    color: var(--color-iris);
   }
 
   &--end {
@@ -73,7 +72,7 @@ body {
 
   .historical-timeline {
     height: 100vh;
-    max-width: 1440px;
+    max-width: 1920px;
     padding: 0;
     position: relative;
 
@@ -91,7 +90,7 @@ body {
     &::after {
       content: '';
       position: absolute;
-      top: 50%;
+      top: 40%;
       left: 0;
       width: 100%;
       height: 1px;
@@ -101,13 +100,14 @@ body {
   }
 
   .historical-timeline__container {
-    max-width: 1200px;
+    width: 1400px;
+    border-inline: 1px solid rgba(66, 86, 122, 0.1);
     height: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 120px 0;
+    padding: 40px 40px 40px 80px;
   }
 
   .historical-timeline__title {
@@ -118,6 +118,7 @@ body {
     text-align: left;
     margin-bottom: 0;
     max-width: none;
+    left: -80px;
 
     &::before {
       content: '';
@@ -127,22 +128,20 @@ body {
       transform: translateY(-50%);
       width: 5px;
       height: 120px;
-      background: linear-gradient(
-        to bottom,
-        var(--color-pink),
-        var(--color-blue)
-      );
+      background: linear-gradient(to bottom,
+          var(--color-blue),
+          var(--color-pink));
     }
   }
 
   .historical-timeline__display {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     gap: 80px;
     margin-bottom: 0;
-    z-index: 1;
+    z-index: -1;
     justify-content: center;
   }
 
@@ -152,7 +151,9 @@ body {
 
   .historical-timeline__bottom-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
+    flex-flow: column-reverse;
+    gap: 40px;
     border-top: none;
     padding-top: 0;
   }

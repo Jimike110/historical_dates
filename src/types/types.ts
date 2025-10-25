@@ -8,6 +8,6 @@ export interface TimelineData {
   id: number;
   startYear: number;
   endYear: number;
-  title: string;
+  title?: string;
   events: HistoricalEvent[];
 }
