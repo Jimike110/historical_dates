@@ -31,7 +31,9 @@ const EventsSlider: React.FC<EventsSliderProps> = ({
   const navPrevButtonRef = useRef<HTMLButtonElement>(null);
   const navNextButtonRef = useRef<HTMLButtonElement>(null);
 
-  const handleProgress = (swiper: SwiperCore) => {
+  const handleProgress = (swiper?: SwiperCore) => {
+    if (!swiper || !swiper.slides) return; // safety check
+
     setIsBeginning(swiper.isBeginning);
     setIsEnd(swiper.isEnd);
 
@@ -59,19 +61,23 @@ const EventsSlider: React.FC<EventsSliderProps> = ({
   useEffect(() => {
     const swiperInstance = swiperRef.current?.swiper;
     if (swiperInstance) {
+      swiperInstance.update(); // force Swiper to recalc slide positions
       swiperInstance.slideTo(0, 0);
-      // Manually update the state after resetting the slider
+
+      // Use setTimeout to ensure DOM layout has been applied
+      setTimeout(() => handleProgress(swiperInstance), 50);
+
       setIsBeginning(swiperInstance.isBeginning);
       setIsEnd(swiperInstance.isEnd);
     }
   }, [activeTimeline]);
 
   return (
-    <>
+    <div ref={eventsWrapperRef}>
       <h3 className={styles.timelineTitle}>{activeTimeline.title}</h3>
       <div className={styles.eventsSliderContainer}>
         <div className={styles.swiperWithNav}>
-          <div ref={eventsWrapperRef}>
+          <div>
             <Swiper
               ref={swiperRef}
               modules={[Navigation]}
@@ -92,15 +98,17 @@ const EventsSlider: React.FC<EventsSliderProps> = ({
               className={styles.swiper}
               watchSlidesProgress={true}
               speed={500}
-              onProgress={handleProgress}
-              onSlideChange={handleProgress}
-              onTransitionEnd={handleProgress}
-              onResize={handleProgress}
-              onPaginationUpdate={handleProgress}
-              onFromEdge={() => handleProgress(swiperRef.current.swiper)}
-              onToEdge={() => handleProgress(swiperRef.current.swiper)}
+              onProgress={(swiper) => handleProgress(swiper)}
+              onSlideChange={(swiper) => handleProgress(swiper)}
+              onTransitionEnd={(swiper) => handleProgress(swiper)}
+              onResize={(swiper) => handleProgress(swiper)}
+              onPaginationUpdate={(swiper) => handleProgress(swiper)}
+              onSwiper={(swiper) => handleProgress(swiper)}
+              onFromEdge={() => handleProgress(swiperRef.current?.swiper)}
+              onToEdge={() => handleProgress(swiperRef.current?.swiper)}
               onSetTransition={handleSetTransition}
-              onInit={handleProgress}
+              onInit={(swiper) => handleProgress(swiper)}
+              onPaginationRender={(swiper) => handleProgress(swiper)}
             >
               {activeTimeline.events.map((event) => (
                 <SwiperSlide key={event.id} className={styles.swiperSlide}>
@@ -135,7 +143,7 @@ const EventsSlider: React.FC<EventsSliderProps> = ({
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default EventsSlider;

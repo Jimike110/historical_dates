@@ -1,11 +1,12 @@
 .timelineTitle {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    font-size: 2rem;
 }
 
 .eventsSliderContainer {
     width: 100%;
     border-top: 1px solid #c7cdd9;
-    padding-top: 20px;
+    padding-top: 2rem;
 }
 
 .swiper {
@@ -27,8 +28,9 @@
 
 .swiperSlide {
     width: 70%;
-    max-width: 300px;
-    height: 150px;
+    max-width: 30rem;
+    height: 170px;
+    cursor: pointer;
 }
 
 .swiperSlide {
@@ -43,29 +45,35 @@
 }
 
 .slideYear {
-    font-size: 20px;
+    font-size: 2rem;
     font-weight: 400;
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: var(--font-secondary);
     line-height: 1.2;
     color: var(--color-blue);
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
 }
 
 .slideDescription {
-    font-size: 16px;
+    font-size: 1.6rem;
     line-height: 1.5;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .customPagination {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 1rem;
     margin-top: 7rem;
 }
 
 .dot {
-    width: 10px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background-color: var(--color-black-blue);
     opacity: 0.4;
