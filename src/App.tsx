@@ -7,7 +7,7 @@ import CircleNav from './components/CircleNav';
 import TimelineControls from './components/TimelineControls';
 import './assets/styles/main.scss';
 import styles from './components/CircleNav.module.scss';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 
 function usePrevious(value: number) {
   const ref = useRef<number>();
