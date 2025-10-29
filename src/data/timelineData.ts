@@ -1,6 +1,8 @@
 import { TimelineData } from '../types/types';
 
-export const timelines: TimelineData[] = [
+export const timelines: [TimelineData, TimelineData, ...TimelineData[]] & {
+  length: 2 | 3 | 4 | 5 | 6;
+} = [
   {
     id: 1,
     startYear: 1995,
