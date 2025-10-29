@@ -2,12 +2,12 @@
 
 :root {
   --color-blue: #3877ee;
-  --color-iris: #5D5FEF;
+  --color-iris: #5d5fef;
   --color-fuschia: #ef5da8;
   --color-black-blue: #42567a;
   --background-color: #f4f5f9;
   --font-primary: 'PT Sans', sans-serif;
-  --font-secondary: 'Bebas Neue', sans-serif
+  --font-secondary: 'Bebas Neue', sans-serif;
 }
 
 * {
@@ -136,9 +136,11 @@ body {
       transform: translateY(-50%);
       width: 5px;
       height: 120px;
-      background: linear-gradient(to bottom,
-          var(--color-blue),
-          var(--color-fuschia));
+      background: linear-gradient(
+        to bottom,
+        var(--color-blue),
+        var(--color-fuschia)
+      );
     }
   }
 
