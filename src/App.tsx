@@ -26,6 +26,18 @@ const App: React.FC = () => {
   const circleRef = useRef<HTMLDivElement>(null);
   const eventsWrapperRef = useRef<HTMLDivElement>(null);
 
+  const handleTimelineChange = (newIndex: number) => {
+    const wrapper = eventsWrapperRef.current;
+    if (!wrapper || newIndex === activeIndex) return;
+
+    gsap.to(wrapper, {
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power1.inOut',
+      onComplete: () => setActiveIndex(newIndex),
+    });
+  };
+
   useLayoutEffect(() => {
     if (prevIndex === undefined) {
       gsap.set(circleRef.current, { rotation: 0 });
@@ -58,29 +70,37 @@ const App: React.FC = () => {
     if (rotationChange < -180) rotationChange += 360;
     const finalRotation = currentRotation + rotationChange;
 
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ defaults: { ease: 'power1.inOut' } });
 
-    tl.to(eventsWrapperRef.current, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power1.inOut',
-    });
+    // fade out old events as rotation starts
+    tl.to(
+      eventsWrapperRef.current,
+      {
+        opacity: 0,
+        duration: 0.4,
+      },
+      0
+    );
 
-    tl.to(circleRef.current, {
-      rotation: finalRotation,
-      duration: 0.8,
-      ease: 'power2.inOut',
-    })
+    // rotate circle and dots
+    tl.to(
+      circleRef.current,
+      {
+        rotation: finalRotation,
+        duration: 0.8,
+      },
+      0
+    )
       .to(
         gsap.utils.toArray(`.${styles.dotContent}`),
         {
           rotation: -finalRotation,
           duration: 0.8,
-          ease: 'power2.inOut',
         },
         '<'
       )
 
+      // roll the years
       .fromTo(
         yearProxy,
         {
@@ -93,25 +113,32 @@ const App: React.FC = () => {
           duration: 0.8,
           ease: 'sine.inOut',
           onUpdate: () => {
-            if (startYearRef.current) {
+            if (startYearRef.current)
               startYearRef.current.innerText = String(
                 Math.round(yearProxy.start)
               );
-            }
-            if (endYearRef.current) {
+            if (endYearRef.current)
               endYearRef.current.innerText = String(Math.round(yearProxy.end));
-            }
           },
         },
         '<'
       );
 
+    // At the midpoint (after fade-out), React updates to the new timeline
+    // This ensures that EventsSlider rerenders new content before fade-in starts.
+    tl.add(() => {
+      // Force the new data render just in time
+      const wrapper = eventsWrapperRef.current;
+      if (wrapper) wrapper.style.opacity = '0'; // keep hidden until fade-in
+    });
+
+    // fade in new events after rotation finishes
     tl.to(eventsWrapperRef.current, {
       opacity: 1,
-      duration: 0.4,
-      ease: 'power1.inOut',
+      duration: 0.5,
+      ease: 'power1.out',
     });
-  }, [activeIndex, prevIndex, activeTimeline, timelines.length]);
+  }, [activeIndex, prevIndex, activeTimeline]);
 
   return (
     <main className="historical-timeline">
@@ -124,7 +151,7 @@ const App: React.FC = () => {
         <CircleNav
           timelines={timelines}
           activeIndex={activeIndex}
-          onSelect={setActiveIndex}
+          onSelect={(index) => handleTimelineChange(index)}
           circleRef={circleRef}
         />
 
@@ -148,12 +175,12 @@ const App: React.FC = () => {
             activeIndex={activeIndex}
             total={timelines.length}
             onPrev={() =>
-              setActiveIndex(
-                (prev) => (prev - 1 + timelines.length) % timelines.length
+              handleTimelineChange(
+                (activeIndex - 1 + timelines.length) % timelines.length
               )
             }
             onNext={() =>
-              setActiveIndex((prev) => (prev + 1) % timelines.length)
+              handleTimelineChange((activeIndex + 1) % timelines.length)
             }
           />
           <EventsSlider
