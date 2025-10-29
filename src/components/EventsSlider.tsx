@@ -12,7 +12,7 @@ interface EventsSliderProps {
   activeTimeline: TimelineData;
   timelines: TimelineData[];
   activeIndex: number;
-  setActiveIndex: (index: number) => void;
+  handleTimelineChange: (index: number) => void;
   eventsWrapperRef: React.RefObject<HTMLDivElement>;
 }
 
@@ -20,7 +20,7 @@ const EventsSlider: React.FC<EventsSliderProps> = ({
   activeTimeline,
   timelines,
   activeIndex,
-  setActiveIndex,
+  handleTimelineChange,
   eventsWrapperRef,
 }) => {
   const swiperRef = useRef<{ swiper: SwiperCore }>(null);
@@ -137,7 +137,7 @@ const EventsSlider: React.FC<EventsSliderProps> = ({
           {timelines.map((_, index) => (
             <button
               key={index}
-              onClick={() => setActiveIndex(index)}
+              onClick={() => handleTimelineChange(index)}
               className={`${styles.dot} ${index === activeIndex ? styles.activeDot : ''}`}
             />
           ))}

@@ -187,7 +187,7 @@ const App: React.FC = () => {
             activeTimeline={activeTimeline}
             timelines={timelines}
             activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
+            handleTimelineChange={handleTimelineChange}
             eventsWrapperRef={eventsWrapperRef}
           />
         </div>
